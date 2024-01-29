@@ -3,56 +3,57 @@ const bcrypt = require('bcrypt');
 
 const fileSchema = new mongoose.Schema({
     senderemail: {
-        requried: true,
+        required: true,
         type: String
     },
     reciveremail: {
-        requried: true,
-        type: String
+        type: String,
+        required: true,
     },
     fileurl: {
-        requried: true,
-        type: String
+        type: String,
+        required: true,
     },
     filename: {
-        requried: true,
-        type: String
+        type: String,
+        required: true,
     },
     sharedAt: {
-        requried: true,
-        type: Date
-    }
-}, { timestamp: true });
-
-const userScherma = new mongoose.Schema({
-    name: {
+        type: Date,
         required: true,
+    }
+}, { timestamps: true });
+
+const userSchema = new mongoose.Schema({
+    name: {
         type: String,
+        required: true,
     },
     email: {
-        required: true,
         type: String,
+        required: true,
     },
     password: {
-        required: true,
         type: String,
+        required: true,
     },
     profilePic: {
+        type: String,
+        default: 'https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg',
         required: true,
-        default: 'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg'
     },
     files: {
         type: [fileSchema],
         default: []
     }
+}, { timestamps: true });
 
-}, { timestamp: true })
-
-userScherma.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
     const user = this;
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 10);
     }
     next();
-})
-mongoose.exports = mongoose.model('User', userScherma);
+});
+
+module.exports = mongoose.model('User', userSchema);
