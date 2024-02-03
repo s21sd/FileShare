@@ -13,6 +13,7 @@ const fs = require('fs');
 const errormiddlewares = require('../middlewares/errorMiddle');
 const checkauthmiddlewares = require('../middlewares/checkauthMiddle');
 const verificationModel = require('../Models/verificationModel');
+const errorHandler = require('../middlewares/errorMiddle');
 
 async function mailer(recievemail, code) {
     let transporter = nodemailer.createTransport({
@@ -60,7 +61,7 @@ router.post('/sendotp', async (req, res) => {
         await mailer(email, code);
         const newVarification = new Verification({ email: email, code: code })
         await newVarification.save();
-        return resfunction(res, 200, 'OTP sent Successfully', null, false);
+        return resfunction(res, 200, 'OTP sent Successfully', null, true);
 
     } catch (error) {
         console.log(error);
@@ -148,7 +149,7 @@ router.post('/register', fileUploaFunction, async (req, res, next) => {
 
 
     } catch (error) {
-        console.log(err);
+        console.log(error);
         return resfunction(res, 500, 'Internal server error', null, false);
     }
 })
@@ -178,22 +179,35 @@ router.post('/login', async (req, res, next) => {
 })
 
 
-router.get('/ ', authTokenHandler, async (req, res, next) => {
+router.get('/checklogin', authTokenHandler, async (req, res, next) => {
     res.json({
         ok: req.ok,
         message: req.message,
         userId: req.userId
-    })
-})
+    });
+});
+
 
 router.post('/logout', authTokenHandler, async (req, res, next) => {
-    req.clearCookie('authToken');
-    req.clearCookie('refreshToken');
+    res.clearCookie('authToken');
+    res.clearCookie('refreshToken');
     res.json({
         ok: true,
         message: 'Logged out successfully'
-    })
+    });
+});
 
+router.get('/getuser', authTokenHandler, async (req, res, next) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) {
+            return resfunction(res, 400, 'User not found ', null, false);
+        }
+        return resfunction(res, 200, 'User found ', user, true);
+    } catch (error) {
+        next(error)
+    }
 })
 
+router.use(errorHandler);
 module.exports = router;

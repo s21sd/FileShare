@@ -1,20 +1,19 @@
 const express = require('express');
+const cors = require("cors");
 const http = require('http');
 const socketIo = require('socket.io');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authroutes');
 const fileRoutes = require('./routes/fileshareroutes');
-
-
 require('./db');
 require('./Models/userModels');
 require('./Models/verificationModel');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server)
-const allowOrigins = ['http://localhost:3000/'];
+const allowOrigins = ['http://localhost:3000'];
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(
     cors({
         origin: function (origin, callback) {
@@ -29,6 +28,7 @@ app.use(
 
     })
 );
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/public', express.static('public'));
