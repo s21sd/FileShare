@@ -4,6 +4,7 @@ const Verification = require('../Models/verificationModel');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const multer = require('multer');
 const nodemailer = require('nodemailer');
 const resfunction = require('../utils/resfunction');
@@ -177,7 +178,7 @@ router.post('/login', async (req, res, next) => {
 })
 
 
-router.get('/checklogin', authTokenHandler, async (req, res, next) => {
+router.get('/ ', authTokenHandler, async (req, res, next) => {
     res.json({
         ok: req.ok,
         message: req.message,
