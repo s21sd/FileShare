@@ -145,7 +145,7 @@ router.post('/register', fileUploaFunction, async (req, res, next) => {
         })
         await user.save();
         await Verification.deleteOne({ email: email });
-        return resfunction(res, 200, 'User Registered successfully', null, false);
+        return resfunction(res, 200, 'User Registered successfully', null, true);
 
 
     } catch (error) {
