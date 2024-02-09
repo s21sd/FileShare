@@ -124,22 +124,21 @@ router.post('/register', fileUploaFunction, async (req, res, next) => {
             }
             return resfunction(res, 400, 'Please send otp first', null, false);
         }
-        // const isMatch = await bcrypt.compare(otp, varificationQueue.code);
-        // if (!isMatch) {
+        const isMatch = await bcrypt.compare(otp, varificationQueue.code);
+        if (!isMatch) {
 
-        //     if (req.file && req.file.path) {
-        //         fs.unlink(req.file.path, (err) => {
-        //             if (err) {
-        //                 console.error('Error deleting file:', err);
-        //             } else {
-        //                 console.log('File deleted successfully');
-        //             }
-        //         });
-        //     }
+            if (req.file && req.file.path) {
+                fs.unlink(req.file.path, (err) => {
+                    if (err) {
+                        console.error('Error deleting file:', err);
+                    } else {
+                        console.log('File deleted successfully');
+                    }
+                });
+            }
 
-
-        //     return resfunction(res, 400, 'Invalid OTP', null, false);
-        // }
+            return resfunction(res, 400, 'Invalid OTP', null, false);
+        }
         user = new User({
             name: name,
             email: email,
