@@ -3,7 +3,7 @@ const User = require('../Models/userModels')
 function checkAuth(req, res, next) {
     const authToken = req.cookies.authToken;
     const refreshToken = req.cookies.refreshToken;
-    console.log("Check Auth Token MIDDLEWARE CALLED", authToken, refreshToken)
+    // console.log("Check Auth Token MIDDLEWARE CALLED", authToken, refreshToken)
 
 
     if (!authToken || !refreshToken) {
