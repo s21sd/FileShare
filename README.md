@@ -20,6 +20,7 @@ Welcome to the File Sharing App! This application allows users to securely share
 - Express
 - MongoDB Atlas
 - NodeMailer
+- Material UI
 
 ## Installation
 
