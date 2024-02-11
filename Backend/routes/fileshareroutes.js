@@ -162,9 +162,9 @@ async function mailer(recieveremail, filesenderemail) {
     })
 
     let info = await transporter.sendMail({
-        from: "Team BitS",
+        from: "Team ShareSphere",
         to: recieveremail,
-        subject: "new file",
+        subject: "New File",
         text: "You recieved a new file from " + filesenderemail,
         html: "<b>You recieved a new file from  " + filesenderemail + "</b>",
 

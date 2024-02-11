@@ -29,7 +29,7 @@ async function mailer(recievemail, code) {
 
     try {
         let info = await transporter.sendMail({
-            from: 'Team Bits',
+            from: 'Team ShareSphere',
             to: recievemail,
             subject: 'OTP for verification',
             text: "Your OTP is " + code,
@@ -57,6 +57,7 @@ router.post('/sendotp', async (req, res) => {
         return resfunction(res, 400, "Email is required", null, false);
     }
     try {
+        await Verification.deleteOne({ email: email });
         const code = Math.floor(100000 + Math.random() * 900000);
         await mailer(email, code);
         const newVarification = new Verification({ email: email, code: code })
@@ -92,12 +93,13 @@ const fileUploaFunction = (req, res, next) => {
     })
 }
 router.post('/register', fileUploaFunction, async (req, res, next) => {
-    console.log(req.file);
+    // console.log(req.file);
     try {
         const { name, email, password, otp } = req.body;
         let user = await User.findOne({ email: email });
         let varificationQueue = await Verification.findOne({ email: email });
-
+        // console.log(otp);
+        // console.log(varificationQueue.code);
         if (user) {
             if (req.file && req.file.path) {
                 fs.unlink(req.file.path, (err) => {
@@ -135,7 +137,9 @@ router.post('/register', fileUploaFunction, async (req, res, next) => {
                         console.log('File deleted successfully');
                     }
                 });
+
             }
+
 
             return resfunction(res, 400, 'Invalid OTP', null, false);
         }
