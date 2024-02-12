@@ -138,7 +138,7 @@ const express = require('express');
 const User = require('../Models/userModels');
 const Verification = require('../Models/verificationModel');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const multer = require('multer');
