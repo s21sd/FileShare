@@ -12,7 +12,7 @@ require('./Models/verificationModel');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server)
-const allowOrigins = ['http://localhost:3000'];
+const allowOrigins = ['*'];
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(
     cors({
