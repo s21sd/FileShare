@@ -5,7 +5,6 @@ function checkAuth(req, res, next) {
     const refreshToken = req.cookies.refreshToken;
     // console.log("Check Auth Token MIDDLEWARE CALLED", authToken, refreshToken)
 
-
     if (!authToken || !refreshToken) {
         return res.status(401).json({ message: 'Authentication failed: No authToken or refreshToken provided', ok: false });
     }
